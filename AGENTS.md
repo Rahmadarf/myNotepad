@@ -211,3 +211,12 @@ Use Wayfinder to generate TypeScript functions for Laravel routes. Import from `
 - IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
 
 </laravel-boost-guidelines>
+
+## Cursor Cloud specific instructions
+
+- Cloud Agents do not use Laravel Herd. The boot script serves the app at `http://127.0.0.1:8000` (`php artisan serve`), runs `php artisan queue:listen`, and runs Vite at `http://127.0.0.1:5173`.
+- PHP 8.4 and Composer are installed on the image. Node is 22. The database is SQLite at `database/database.sqlite`.
+- Install copies `.env.example` to `.env`, sets `APP_URL` to `http://127.0.0.1:8000`, generates `APP_KEY`, runs `php artisan wayfinder:generate --with-form`, `npm ci`, and `npm run build`. `npm run types:check` needs the Wayfinder output from `--with-form`.
+- `php artisan test` errors on feature tests that write to the database because `RefreshDatabase` is commented out in `tests/Pest.php`. HTTP tests also need `public/build/manifest.json` from `npm run build`.
+- `npm run lint:check` and `npm run format:check` fail on the existing notes and dashboard pages. That is current application code, not a missing toolchain.
+
